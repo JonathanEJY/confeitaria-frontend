@@ -1,0 +1,42 @@
+.home-container {
+  height: 100vh;
+  background: #f8fafc; /* gelo */
+  color: #020617; /* quase preto */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.home-container h1 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.home-container p {
+  color: #475569;
+  margin-bottom: 2.5rem;
+}
+
+.home-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.home-actions a {
+  padding: 0.75rem 1.75rem;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  color: #020617;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.2s ease;
+}
+
+.home-actions a:hover {
+  background: #f1f5f9;
+  border-color: #cbd5f5;
+}
