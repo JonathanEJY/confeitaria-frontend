@@ -1,9 +1,12 @@
 import "./Login.css";
 import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
+import { useAuth } from "../../hooks/useAuth";
+import { api } from "../../lib/api";
 
 function Login() {
   const navigate = useNavigate();
+  const { refreshUser } = useAuth();
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -11,17 +14,18 @@ function Login() {
     const email = formData.get("email");
     const password = formData.get("password");
 
-    const response = await axios.post(
-      "http://localhost:3000/login",
-      {
+    try {
+      const response = await api.post("/login", {
         email,
         password,
-      },
-      {
-        withCredentials: true,
+      });
+      if (response.status === 200) {
+        await refreshUser();
+        navigate("/dashboard");
       }
-    );
-    console.log(response);
+    } catch (error) {
+      alert("Error");
+    }
   }
 
   return (
@@ -33,7 +37,13 @@ function Login() {
         <h1>Login</h1>
 
         <input type="email" placeholder="Email" name="email" required />
-        <input type="password" placeholder="Senha" name="password" required />
+        <input
+          type="password"
+          placeholder="Senha"
+          name="password"
+          autoComplete="on"
+          required
+        />
 
         <button type="submit">Entrar</button>
       </form>

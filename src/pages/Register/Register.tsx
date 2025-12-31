@@ -1,9 +1,11 @@
 import { useNavigate, Link } from "react-router-dom";
 import "./Register.css";
-import axios from "axios";
+import { api } from "../../lib/api";
+import { useAuth } from "../../hooks/useAuth";
 
 function Register() {
   const navigate = useNavigate();
+  const { refreshUser } = useAuth();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -13,12 +15,20 @@ function Register() {
     const passwordHash = formData.get("passwordHash");
     const username = formData.get("username");
 
-    const response = await axios.post("http://localhost:3000/users", {
-      email,
-      passwordHash,
-      username,
-    });
-    console.log(response);
+    try {
+      const response = await api.post("/users", {
+        email,
+        passwordHash,
+        username,
+      });
+      if (response.status === 201) {
+        alert("Usuário criado com sucesso!");
+        await refreshUser();
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      alert(error);
+    }
   }
 
   return (
