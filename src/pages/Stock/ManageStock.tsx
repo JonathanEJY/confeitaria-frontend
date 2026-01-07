@@ -15,6 +15,7 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
+import { useState } from "react";
 
 type Product = {
   uuid: string;
@@ -35,10 +36,9 @@ export function ManageStock({ stockName, products }: Props) {
           <p className="text-muted-foreground">{stockName}</p>
         </div>
 
-        {/* Formulário */}
         <form className="flex flex-wrap gap-3 items-end">
           <Select>
-            <SelectTrigger className="w-[220px]">
+            <SelectTrigger className="w-55">
               <SelectValue placeholder="Produto" />
             </SelectTrigger>
             <SelectContent>
@@ -50,14 +50,13 @@ export function ManageStock({ stockName, products }: Props) {
             </SelectContent>
           </Select>
 
-          <Input type="number" placeholder="Quantidade" className="w-[140px]" />
+          <Input type="number" placeholder="Quantidade" className="w-35" />
 
-          <Input type="number" placeholder="Valor pago" className="w-[160px]" />
+          <Input type="number" placeholder="Valor pago" className="w-40" />
 
           <Button>Adicionar</Button>
         </form>
 
-        {/* Tabela */}
         <Table>
           <TableHeader>
             <TableRow className="bg-muted">
@@ -69,16 +68,26 @@ export function ManageStock({ stockName, products }: Props) {
           </TableHeader>
 
           <TableBody>
-            <TableRow>
-              <TableCell>Farinha</TableCell>
-              <TableCell>5 kg</TableCell>
-              <TableCell>R$ 18,90</TableCell>
-              <TableCell className="text-right">
-                <Button size="sm" variant="destructive">
-                  Remover
-                </Button>
-              </TableCell>
-            </TableRow>
+            {products.length === 0 ? (
+              <TableRow className="border-b">
+                <TableCell colSpan={3} className="text-center py-6">
+                  Nenhum produto cadastrado
+                </TableCell>
+              </TableRow>
+            ) : (
+              products.map((product) => (
+                <TableRow className="border-b" key={product.uuid}>
+                  <TableCell>{product.name}</TableCell>
+                  <TableCell>{1}</TableCell>
+                  <TableCell>{2}</TableCell>
+                  <TableCell className="text-right">
+                    <Button size="sm" variant="destructive">
+                      Remover
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </div>
