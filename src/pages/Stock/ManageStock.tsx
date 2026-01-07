@@ -15,7 +15,6 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
-import { useState } from "react";
 
 type Product = {
   uuid: string;
