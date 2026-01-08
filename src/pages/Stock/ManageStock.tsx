@@ -15,6 +15,8 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
+import { useEffect, useState } from "react";
+import { api } from "@/lib/api";
 
 type Product = {
   uuid: string;
@@ -27,6 +29,24 @@ type Props = {
 };
 
 export function ManageStock({ stockName, products }: Props) {
+  const [stockProducts, setStockProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  async function loadProducts() {
+    try {
+      const response = await api.get("/stock/products");
+      setStockProducts(response.data);
+    } catch (error) {
+      alert("Erro ao carregar produtos");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    loadProducts();
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-5xl mx-auto px-6 py-8 space-y-6">
@@ -74,7 +94,7 @@ export function ManageStock({ stockName, products }: Props) {
                 </TableCell>
               </TableRow>
             ) : (
-              products.map((product) => (
+              stockProducts.map((product) => (
                 <TableRow className="border-b" key={product.uuid}>
                   <TableCell>{product.name}</TableCell>
                   <TableCell>{1}</TableCell>
