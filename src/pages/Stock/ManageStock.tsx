@@ -18,7 +18,6 @@ import {
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 
-// Tipo base do produto (usado na listagem de produtos disponíveis)
 type Product = {
   uuid: string;
   id?: number;
@@ -58,7 +57,6 @@ export function ManageStock({ stock, products }: Props) {
   const [stockProducts, setStockProducts] = useState<StockProduct[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Estados do formulário
   const [selectedProductId, setSelectedProductId] = useState<string>("");
   const [quantity, setQuantity] = useState<string>("");
   const [costPrice, setCostPrice] = useState<string>("");
@@ -81,7 +79,6 @@ export function ManageStock({ stock, products }: Props) {
   async function insertStockProduct(e: React.FormEvent) {
     e.preventDefault();
 
-    // Validações básicas
     if (!selectedProductId || !quantity || !costPrice) {
       alert(
         "Preencha os campos obrigatórios: Produto, Quantidade e Valor pago"
@@ -92,7 +89,6 @@ export function ManageStock({ stock, products }: Props) {
     try {
       setLoading(true);
 
-      // Monta o objeto de dados, incluindo opcionais apenas se preenchidos
       const data: any = {
         productId: selectedProductId,
         stockId: stock.uuid,
@@ -100,7 +96,6 @@ export function ManageStock({ stock, products }: Props) {
         costPrice: Math.round(parseFloat(costPrice) * 100), // Converte para centavos
       };
 
-      // Adiciona campos opcionais apenas se preenchidos
       if (lot.trim()) {
         data.lot = lot.trim();
       }
@@ -111,14 +106,12 @@ export function ManageStock({ stock, products }: Props) {
 
       await api.post("/stock/products", data);
 
-      // Limpa o formulário
       setSelectedProductId("");
       setQuantity("");
       setCostPrice("");
       setLot("");
       setExpiresAt("");
 
-      // Recarrega a lista
       await loadProducts();
 
       alert("Produto adicionado com sucesso!");
