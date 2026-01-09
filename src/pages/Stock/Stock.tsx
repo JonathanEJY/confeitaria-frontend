@@ -37,7 +37,7 @@ function Stock() {
     return <CreateStock onCreate={handleCreateStock} />;
   }
 
-  return <ManageStock stockName={stock.name} products={products} />;
+  return <ManageStock stock={stock} products={products} />;
 }
 
 export default Stock;
