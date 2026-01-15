@@ -318,7 +318,3 @@ function Products() {
 }
 
 export default Products;
-
-// TODO: incluir o modal de editar produto e fazer ele funcionar
-// TODO: ver se o shadcn tem o alert e confirm personalizados, se sim, tirar o react toast
-// TODO: ver se posso usar o loader para carregar os produtos ao invés do useEffect
