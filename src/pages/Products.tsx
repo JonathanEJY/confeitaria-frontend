@@ -1,32 +1,9 @@
-import { useEffect, useState } from "react";
-import { api } from "../lib/api";
-import { useAuth } from "../hooks/useAuth";
-import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-
 import ProductForm from "@/features/products/components/ProductForm";
 import ProductTable from "@/features/products/components/ProductTable";
 import Header from "@/components/layout/Header";
+import { useProducts } from "@/features/products/api/get-products";
 
 function Products() {
-  const { user } = useAuth();
-  // // const [products, setProducts] = useState<Product[]>([]);
-  // const [name, setName] = useState("");
-  // const [unit, setUnit] = useState("");
-  // const [loading, setLoading] = useState(true);
-
-  // async function loadProducts() {
-  //   try {
-  //     const response = await api.get("/users/products");
-  //     setProducts(response.data);
-  //   } catch (error) {
-  //     alert("Erro ao carregar produtos");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }
-
   // async function handleCreateProduct(e: React.FormEvent) {
   //   e.preventDefault();
 
@@ -122,14 +99,7 @@ function Products() {
   //     toast.error("Erro ao atualizar produto");
   //   }
   // }
-
-  // useEffect(() => {
-  //   loadProducts();
-  // }, []);
-
-  // if (loading) {
-  //   return <p>Carregando produtos...</p>;
-  // }
+  const { data: products, isLoading } = useProducts();
 
   return (
     <div className="min-h-screen bg-background">
@@ -141,7 +111,15 @@ function Products() {
 
         <ProductForm />
 
-        <ProductTable />
+        {isLoading ? (
+          <div className="space-y-2">
+            <div className="h-12 bg-gray-200 rounded animate-pulse" />
+            <div className="h-12 bg-gray-200 rounded animate-pulse" />
+            <div className="h-12 bg-gray-200 rounded animate-pulse" />
+          </div>
+        ) : (
+          <ProductTable products={products || []} />
+        )}
       </div>
     </div>
   );

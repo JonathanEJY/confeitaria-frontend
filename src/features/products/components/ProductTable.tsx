@@ -8,11 +8,16 @@ import {
 } from "@/components/ui/table";
 
 import { Button } from "@/components/ui/button";
+import type { Product } from "@/types/product";
 
-function ProductTable() {
+type ProductTableProps = {
+  products: Product[];
+};
+
+function ProductTable({ products }: ProductTableProps) {
   return (
     <Table className="w-full table-fixed">
-      {/* <TableHeader>
+      <TableHeader>
         <TableRow className="bg-muted">
           <TableHead className="w-[40%]">Nome</TableHead>
           <TableHead className="w-[40%]">Unidade</TableHead>
@@ -52,7 +57,7 @@ function ProductTable() {
             </TableRow>
           ))
         )}
-      </TableBody> */}
+      </TableBody>
     </Table>
   );
 }
