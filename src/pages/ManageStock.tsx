@@ -23,60 +23,21 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { api } from "@/lib/api";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
-import { z } from "zod";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
-
-type Product = {
-  uuid: string;
-  id?: number;
-  name: string;
-};
-
-type StockProduct = {
-  uuid: string;
-  quantity: number;
-  lot: string;
-  expiresAt: Date;
-  costPrice: number;
-  createdAt: Date;
-  updatedAt: Date;
-  productId: string;
-  stockId: string;
-  product: {
-    id: number;
-    name: string;
-    unit: string;
-  };
-};
-
-type Stock = {
-  uuid: string;
-  name: string;
-  id: number;
-  createdAt: Date;
-  updatedAt: Date;
-};
+import type { Product } from "@/types/product";
+import type { Stock } from "@/types/stock";
 
 type Props = {
   stock: Stock;
   products: Product[];
 };
-
-const productInsertSchema = z.object({
-  selectedProductId: z.uuid(),
-  quantity: z.number().min(0.01, "Quantidade deve ser maior que 0"),
-  costPrice: z.number().min(0.01, "Valor deve ser maior que 0"),
-  lot: z.string().optional().or(z.literal("")),
-  expiresAt: z.date().optional(),
-});
-
-type ProductInsertSchema = z.infer<typeof productInsertSchema>;
 
 export function ManageStock({ stock, products }: Props) {
   const [openEditDialog, setOpenEditDialog] = useState(false);

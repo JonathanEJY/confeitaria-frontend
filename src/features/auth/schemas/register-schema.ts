@@ -1,0 +1,1 @@
+// # Validação Zod do registro
