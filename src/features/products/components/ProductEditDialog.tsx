@@ -19,8 +19,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
-function ProductEditDialog() {
-  const [openEditDialog, setOpenEditDialog] = useState(false);
+type ProductEditDialogProps = {
+  isOpen: boolean;
+};
+
+function ProductEditDialog({ isOpen }: ProductEditDialogProps) {
+  const [openEditDialog, setOpenEditDialog] = useState(isOpen);
 
   // const [selectedProductId, setSelectedProductId] = useState<string | null>(
   //   null,
@@ -31,7 +35,7 @@ function ProductEditDialog() {
 
   return (
     <Dialog open={openEditDialog} onOpenChange={setOpenEditDialog}>
-      {/* <DialogContent>
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Editar produto</DialogTitle>
           <DialogDescription>
@@ -39,46 +43,8 @@ function ProductEditDialog() {
           </DialogDescription>
         </DialogHeader>
 
-        {productInfo ? (
-          <form className="space-y-4">
-            <div>
-              <Label htmlFor="editName">Nome do produto</Label>
-              <Input id="editName" placeholder="Nome do produto" />
-            </div>
-
-            <div>
-              <Label htmlFor="editUnit">Unidade</Label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="un">Unidade</SelectItem>
-                  <SelectItem value="g">Gramas</SelectItem>
-                  <SelectItem value="kg">KG</SelectItem>
-                  <SelectItem value="ml">ml</SelectItem>
-                  <SelectItem value="L">Litros</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="flex gap-2">
-              <Button type="submit" className="flex-1">
-                Salvar alterações
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setOpenEditDialog(false)}
-              >
-                Cancelar
-              </Button>
-            </div>
-          </form>
-        ) : (
-          <p>Carregando...</p>
-        )}
-      </DialogContent> */}
+        <p>Carregando...</p>
+      </DialogContent>
     </Dialog>
   );
 }
