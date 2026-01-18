@@ -18,6 +18,12 @@ type ProductTableProps = {
 
 function ProductTable({ products }: ProductTableProps) {
   const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+  function handleEditDialogOpenChange(isOpen: boolean) {
+    setOpenEditDialog(isOpen);
+  }
+
   return (
     <>
       <Table className="w-full table-fixed">
@@ -49,7 +55,10 @@ function ProductTable({ products }: ProductTableProps) {
                     <Button
                       size="sm"
                       className="bg-amber-300 text-gray-800 hover:bg-amber-200"
-                      onClick={() => setOpenEditDialog(true)}
+                      onClick={() => {
+                        setOpenEditDialog(true);
+                        setSelectedProduct(product);
+                      }}
                     >
                       Editar
                     </Button>
@@ -64,7 +73,11 @@ function ProductTable({ products }: ProductTableProps) {
           )}
         </TableBody>
       </Table>
-      <ProductEditDialog isOpen={openEditDialog} />
+      <ProductEditDialog
+        isOpen={openEditDialog}
+        handleIsOpen={handleEditDialogOpenChange}
+        product={selectedProduct}
+      />
     </>
   );
 }

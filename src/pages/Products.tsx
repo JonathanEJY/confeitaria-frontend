@@ -126,22 +126,3 @@ function Products() {
 }
 
 export default Products;
-
-// EXEMPLO:
-
-// import { useProducts } from '@/features/products/api/get-products';
-// import { ProductList } from '@/features/products/components/ProductList';
-
-// export function Products() {
-//   const { data: products, isLoading, error } = useProducts();
-
-//   if (isLoading) return <div>Carregando...</div>;
-//   if (error) return <div>Erro ao carregar produtos</div>;
-
-//   return (
-//     <div>
-//       <h1>Produtos</h1>
-//       <ProductList products={products} />
-//     </div>
-//   );
-// }

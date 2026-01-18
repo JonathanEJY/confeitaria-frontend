@@ -18,23 +18,21 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import type { Product } from "@/types/product";
 
 type ProductEditDialogProps = {
   isOpen: boolean;
+  handleIsOpen: (isOpen: boolean) => void;
+  product: Product | null;
 };
 
-function ProductEditDialog({ isOpen }: ProductEditDialogProps) {
-  const [openEditDialog, setOpenEditDialog] = useState(isOpen);
-
-  // const [selectedProductId, setSelectedProductId] = useState<string | null>(
-  //   null,
-  // );
-  // const [productInfo, setProduct] = useState<Product | null>(null);
-  // const [editName, setEditName] = useState("");
-  // const [editUnit, setEditUnit] = useState("");
-
+function ProductEditDialog({
+  isOpen,
+  handleIsOpen,
+  product,
+}: ProductEditDialogProps) {
   return (
-    <Dialog open={openEditDialog} onOpenChange={setOpenEditDialog}>
+    <Dialog open={isOpen} onOpenChange={handleIsOpen}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Editar produto</DialogTitle>
@@ -42,8 +40,14 @@ function ProductEditDialog({ isOpen }: ProductEditDialogProps) {
             Aqui você poderá editar as informações do produto.
           </DialogDescription>
         </DialogHeader>
-
-        <p>Carregando...</p>
+        {product ? (
+          <div>
+            <Label htmlFor="editName">Nome do Produto</Label>
+            <Input id="editName" placeholder={product.name} />
+          </div>
+        ) : (
+          <p>Nada para ser exibido aqui</p>
+        )}
       </DialogContent>
     </Dialog>
   );
