@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import type { Product } from "@/types/product";
+import ProductEditForm from "./ProductEditForm";
 
 type ProductEditDialogProps = {
   isOpen: boolean;
@@ -40,14 +41,7 @@ function ProductEditDialog({
             Aqui você poderá editar as informações do produto.
           </DialogDescription>
         </DialogHeader>
-        {product ? (
-          <div>
-            <Label htmlFor="editName">Nome do Produto</Label>
-            <Input id="editName" placeholder={product.name} />
-          </div>
-        ) : (
-          <p>Nada para ser exibido aqui</p>
-        )}
+        {product ? <ProductEditForm /> : <p>Nada para ser exibido aqui</p>}
       </DialogContent>
     </Dialog>
   );
