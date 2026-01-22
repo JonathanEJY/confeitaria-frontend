@@ -15,7 +15,7 @@ type ProductEditFormProps = {
   product: Product;
 };
 
-function ProductEditForm(product: Product) {
+function ProductEditForm({ product }: ProductEditFormProps) {
   return (
     <form className="space-y-4">
       <div>

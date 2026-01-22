@@ -54,51 +54,6 @@ function Products() {
   //   }
   // }
 
-  // async function handleUpdateProduct(productId: string) {
-  //   try {
-  //     const getProductInfo = await api.get("/users/product", {
-  //       params: {
-  //         productId: productId,
-  //       },
-  //     });
-  //     const product = getProductInfo.data[0];
-  //     setProduct(product);
-
-  //     setEditName(product.name);
-  //     setEditUnit(product.unit);
-  //   } catch (error) {
-  //     toast.error("Erro ao buscar informações do produto");
-  //     return;
-  //   }
-  //   setSelectedProductId(productId);
-  //   setOpenEditDialog(true);
-  // }
-
-  // async function handleSaveEdit(e: React.FormEvent) {
-  //   e.preventDefault();
-
-  //   if (!editName) {
-  //     toast.error("Nome é obrigatório");
-  //     return;
-  //   }
-
-  //   try {
-  //     await api.patch("/users/product", {
-  //       uuid: selectedProductId,
-  //       name: editName,
-  //       unit: editUnit,
-  //     });
-
-  //     toast.success("Produto atualizado com sucesso!", {
-  //       autoClose: 1500,
-  //     });
-
-  //     setOpenEditDialog(false);
-  //     await loadProducts();
-  //   } catch (error) {
-  //     toast.error("Erro ao atualizar produto");
-  //   }
-  // }
   const { data: products, isLoading } = useProducts();
 
   return (

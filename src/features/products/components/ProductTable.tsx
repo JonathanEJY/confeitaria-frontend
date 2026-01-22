@@ -46,7 +46,7 @@ function ProductTable({ products }: ProductTableProps) {
             products.map((product) => (
               <TableRow
                 key={product.uuid}
-                className="border-b hover:bg-muted/50 transition"
+                className="hover:bg-muted/50 transition"
               >
                 <TableCell className="text-lg">{product.name}</TableCell>
                 <TableCell className="text-lg">{product.unit}</TableCell>

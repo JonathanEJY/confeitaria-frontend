@@ -4,4 +4,4 @@ import { useProducts } from "../api/get-products";
 import { useForm } from "react-hook-form";
 import { productSchema, type ProductSchema } from "../schemas/product-schema";
 
-export function useProductForm() {}
+export function useProduct() {}
