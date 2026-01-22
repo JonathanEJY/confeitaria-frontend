@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import type { Product } from "@/types/product";
+import { useProductEditForm } from "../hooks/use-product-edit";
 
 type ProductEditFormProps = {
   product: Product;
