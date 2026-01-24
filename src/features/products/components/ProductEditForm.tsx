@@ -17,8 +17,10 @@ type ProductEditFormProps = {
 };
 
 function ProductEditForm({ product }: ProductEditFormProps) {
+  const { handleSubmit } = useProductEditForm();
+
   return (
-    <form className="space-y-4">
+    <form className="space-y-4" onSubmit={handleSubmit}>
       <div>
         <Label htmlFor="editName">{product.name}</Label>
         <Input id="editName" placeholder="Nome do produto" />

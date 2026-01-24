@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUpdateProduct } from "../api/update-product";
-import { productSchema, type ProductSchema } from "../schemas/product-schema";
+import { productSchema, type ProductSchema } from "../schemas/product.schema";
 
 export function useProductEditForm() {
   const productEditMutation = useUpdateProduct();
