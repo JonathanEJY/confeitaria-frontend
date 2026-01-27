@@ -1,7 +1,7 @@
 import ProductForm from "@/features/products/components/ProductForm";
 import ProductTable from "@/features/products/components/ProductTable";
 import Header from "@/components/layout/Header";
-import { useProducts } from "@/features/products/api/get-products";
+import { useGetProducts } from "@/features/products/queries";
 
 function Products() {
   // async function handleCreateProduct(e: React.FormEvent) {
@@ -54,7 +54,7 @@ function Products() {
   //   }
   // }
 
-  const { data: products, isLoading } = useProducts();
+  const { data: products, isLoading } = useGetProducts();
 
   return (
     <div className="min-h-screen bg-background">

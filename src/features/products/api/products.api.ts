@@ -11,10 +11,12 @@ export async function createProductApi(newProduct: Product): Promise<Product> {
   return data;
 }
 
-// export async function updateProductApi(productUUID: ){
+export async function updateProductApi(product: Product): Promise<Product>{
+  const {data} = await api.patch<Product>("/users/products", product)
+  return data
+}
 
-// }
-
-// export async function deleteProductApi(productUUID: ) {
-
-// }
+export async function deleteProductApi(product: Product) {
+  const {data} = await api.delete<Product>("/users/products", {data:product})
+  return data
+}
