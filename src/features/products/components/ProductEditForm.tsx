@@ -11,40 +11,38 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 import type { Product } from "@/types/product";
-import { useProductEditForm } from "../hooks/use-product-edit";
+import { useProductEditForm } from "../hooks/use-product-edit-form";
 import { Controller } from "react-hook-form";
+import { useUpdateProduct } from "../react-query/queries";
+import { toast } from "react-toastify";
 
 type ProductEditFormProps = {
   product: Product;
+  onSuccess: () => void;
 };
 
-function ProductEditForm({ product }: ProductEditFormProps) {
-  const {
-    register,
-    handleSubmit,
-    control,
-    errors,
-    isLoading,
-  } = useProductEditForm(product);
+function ProductEditForm({ product, onSuccess }: ProductEditFormProps) {
+  const { register, handleSubmit, control, errors } =
+    useProductEditForm(product);
+
+  const { mutate, isPending } = useUpdateProduct();
+
+  async function onSubmit(data: Product) {
+    mutate(data, {
+      onSuccess: () => {
+        onSuccess();
+        toast.success("Produto editado com sucesso!");
+      },
+    });
+  }
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit}>
-      {/* Nome */}
+    <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
       <div className="space-y-1">
         <Label htmlFor="editName">Nome</Label>
-        <Input
-          id="editName"
-          placeholder="Nome do produto"
-          {...register("name")}
-        />
-        {errors.name && (
-          <span className="text-sm text-red-500">
-            {errors.name.message}
-          </span>
-        )}
+        <Input placeholder="Nome do produto" {...register("name")} />
       </div>
 
-      {/* Unidade */}
       <div className="space-y-1">
         <Label>Unidade</Label>
 
@@ -52,10 +50,7 @@ function ProductEditForm({ product }: ProductEditFormProps) {
           control={control}
           name="unit"
           render={({ field }) => (
-            <Select
-              value={field.value}
-              onValueChange={field.onChange}
-            >
+            <Select value={field.value} onValueChange={field.onChange}>
               <SelectTrigger>
                 <SelectValue placeholder="Selecione a unidade" />
               </SelectTrigger>
@@ -70,24 +65,20 @@ function ProductEditForm({ product }: ProductEditFormProps) {
             </Select>
           )}
         />
-
-        {errors.unit && (
-          <span className="text-sm text-red-500">
-            {errors.unit.message}
-          </span>
-        )}
       </div>
 
-      {/* Botões */}
       <div className="flex gap-2">
-        <Button type="submit" className="flex-1" disabled={isLoading}>
-          {isLoading ? "Salvando..." : "Salvar alterações"}
+        <Button type="submit" className="flex-1" disabled={isPending}>
+          {isPending ? "Salvando..." : "Salvar alterações"}
         </Button>
 
         <Button type="button" variant="outline">
           Cancelar
         </Button>
       </div>
+      {errors.root && (
+        <span className="text-sm text-red-500">{errors.root.message}</span>
+      )}
     </form>
   );
 }

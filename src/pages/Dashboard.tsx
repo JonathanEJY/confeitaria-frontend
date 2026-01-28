@@ -8,10 +8,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useAuth } from "@/hooks/useAuth";
+import useDocumentTitle from "@/hooks/useDocumentTitle";
 
 function Dashboard() {
   const { user, logout } = useAuth();
-
+  useDocumentTitle("Dashboard - Confeitaria");
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
       <Card className="w-full max-w-md shadow-sm">

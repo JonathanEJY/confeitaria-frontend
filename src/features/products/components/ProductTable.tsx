@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import type { Product } from "@/types/product";
 import ProductEditDialog from "./ProductEditDialog";
 import { useState } from "react";
+// fazer o import do mutate e jogar pro botão de deletar?
 
 type ProductTableProps = {
   products: Product[];

@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import useDocumentTitle from "@/hooks/useDocumentTitle";
 
 function Home() {
+  useDocumentTitle("Home - Confeitaria");
   return (
     <div className="home-container">
       <h1>Bem-vindo 👋</h1>
