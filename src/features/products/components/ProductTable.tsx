@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import type { Product } from "@/types/product";
 import ProductEditDialog from "./ProductEditDialog";
 import { useState } from "react";
-// fazer o import do mutate e jogar pro botão de deletar?
+import { useDeleteProduct } from "../react-query/queries";
 
 type ProductTableProps = {
   products: Product[];
@@ -20,6 +20,8 @@ type ProductTableProps = {
 function ProductTable({ products }: ProductTableProps) {
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+  const { mutate } = useDeleteProduct();
 
   function handleEditDialogOpenChange(isOpen: boolean) {
     setOpenEditDialog(isOpen);
@@ -64,7 +66,11 @@ function ProductTable({ products }: ProductTableProps) {
                       Editar
                     </Button>
 
-                    <Button size="sm" variant={"destructive"}>
+                    <Button
+                      size="sm"
+                      variant={"destructive"}
+                      onClick={() => mutate(product.uuid)}
+                    >
                       Deletar
                     </Button>
                   </div>

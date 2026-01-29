@@ -5,6 +5,7 @@ import {
   updateProductApi,
   deleteProductApi,
 } from "../api/products.api";
+import { toast } from "react-toastify";
 
 export function useGetProducts() {
   return useQuery({
@@ -34,7 +35,12 @@ export function useUpdateProduct() {
 }
 
 export function useDeleteProduct() {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: deleteProductApi,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      toast.success("Produto deletado com sucesso!");
+    },
   });
 }

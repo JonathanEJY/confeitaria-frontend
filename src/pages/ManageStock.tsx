@@ -23,51 +23,92 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
-
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
-import type { Product } from "@/types/product";
-import type { Stock } from "@/types/stock";
+
+type Product = {
+  uuid: string;
+  id?: number;
+  name: string;
+};
+
+type StockProduct = {
+  uuid: string;
+  quantity: number;
+  lot: string;
+  expiresAt: Date | null;
+  costPrice: number;
+  createdAt: Date;
+  updatedAt: Date;
+  productId: string;
+  stockId: string;
+  product: {
+    id: number;
+    name: string;
+    unit: string;
+  };
+};
+
+type Stock = {
+  uuid: string;
+  name: string;
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+};
 
 type Props = {
   stock: Stock;
   products: Product[];
 };
 
+const productInsertSchema = z.object({
+  selectedProductId: z.string().uuid("Produto obrigatório"),
+  quantity: z.number().min(0.01, "Quantidade deve ser maior que 0"),
+  costPrice: z.number().min(0.01, "Valor deve ser maior que 0"),
+  lot: z.string().optional(),
+  expiresAt: z.date().optional(),
+});
+
+type ProductInsertSchema = z.infer<typeof productInsertSchema>;
+
 export function ManageStock({ stock, products }: Props) {
+  const [stockProducts, setStockProducts] = useState<StockProduct[]>([]);
   const [openEditDialog, setOpenEditDialog] = useState(false);
 
-  const [selectedStockProductId, setSelectedStockProductId] =
-    useState<string>("");
-  const [editQuantity, setEditQuantity] = useState<string>("");
-  const [editCostPrice, setEditCostPrice] = useState<string>("");
-  const [editLot, setEditLot] = useState<string>("");
-  const [editExpiresAt, setEditExpiresAt] = useState<string>("");
+  const [selectedStockProductId, setSelectedStockProductId] = useState("");
+  const [editQuantity, setEditQuantity] = useState("");
+  const [editCostPrice, setEditCostPrice] = useState("");
+  const [editLot, setEditLot] = useState("");
+  const [editExpiresAt, setEditExpiresAt] = useState("");
 
-  const { isPending, isError, data, error } = useQuery({
-    queryKey: ["products"],
+  async function getProducts(): Promise<StockProduct[]> {
+    const { data } = await api.get("/stock/products", {
+      params: { stockId: stock.uuid },
+    });
+    return data;
+  }
+
+  const { data, isPending, isError, error } = useQuery({
+    queryKey: ["stock-products", stock.uuid],
     queryFn: getProducts,
   });
 
-  async function getProducts() {
-    try {
-      const { data } = await api.get("/stock/products", {
-        params: { stockId: stock.uuid },
-      });
-      return data;
-    } catch (error) {
-      console.log("erro");
+  useEffect(() => {
+    if (data) {
+      setStockProducts(data);
     }
-  }
+  }, [data]);
 
   const { reset, handleSubmit, control } = useForm<ProductInsertSchema>({
     defaultValues: {
-      selectedProductId: "",
+      selectedProductId: undefined,
       quantity: undefined,
       costPrice: undefined,
       lot: "",
@@ -76,131 +117,110 @@ export function ManageStock({ stock, products }: Props) {
     resolver: zodResolver(productInsertSchema),
   });
 
-  if (isPending) {
-    return <span>Loading...</span>;
-  }
-
-  if (isError) {
-    return <span>Error: {error.message}</span>;
-  }
-
-  async function insertStockProduct(data: any) {
-    console.log(data);
-    reset();
-  }
-
-  async function handleUpdateStockProduct(stockProductId: string) {
+  async function insertStockProduct(formData: ProductInsertSchema) {
     try {
-      const stockProduct = stockProducts.find(
-        (sp) => sp.uuid === stockProductId
-      );
+      await api.post("/stock/products", {
+        ...formData,
+        stockId: stock.uuid,
+        costPrice: Math.round(formData.costPrice * 100),
+      });
 
-      if (!stockProduct) {
-        toast.error("Produto não encontrado");
-        return;
-      }
+      toast.success("Produto adicionado com sucesso");
+      reset();
 
-      setSelectedStockProductId(stockProductId);
-      setEditQuantity(stockProduct.quantity.toString());
-      setEditCostPrice((stockProduct.costPrice / 100).toFixed(2));
-      setEditLot(stockProduct.lot || "");
-      setEditExpiresAt(
-        stockProduct.expiresAt
-          ? new Date(stockProduct.expiresAt).toISOString().split("T")[0]
-          : ""
-      );
-
-      setOpenEditDialog(true);
-    } catch (error) {
-      toast.error("Erro ao buscar informações do produto");
+      const updated = await getProducts();
+      setStockProducts(updated);
+    } catch {
+      toast.error("Erro ao adicionar produto");
     }
+  }
+
+  function handleUpdateStockProduct(stockProductId: string) {
+    const stockProduct = stockProducts.find((sp) => sp.uuid === stockProductId);
+
+    if (!stockProduct) {
+      toast.error("Produto não encontrado");
+      return;
+    }
+
+    setSelectedStockProductId(stockProductId);
+    setEditQuantity(stockProduct.quantity.toString());
+    setEditCostPrice((stockProduct.costPrice / 100).toFixed(2));
+    setEditLot(stockProduct.lot || "");
+    setEditExpiresAt(
+      stockProduct.expiresAt
+        ? new Date(stockProduct.expiresAt).toISOString().split("T")[0]
+        : "",
+    );
+
+    setOpenEditDialog(true);
   }
 
   async function handleSaveEdit(e: React.FormEvent) {
     e.preventDefault();
 
-    if (!editQuantity || !editCostPrice) {
-      toast.error("Quantidade e Valor pago são obrigatórios");
-      return;
-    }
-
     try {
-      const data: any = {
+      await api.patch("/stock/products", {
         stockProductId: selectedStockProductId,
-        quantity: parseFloat(editQuantity),
-        costPrice: Math.round(parseFloat(editCostPrice) * 100),
-      };
-
-      if (editLot.trim()) {
-        data.lot = editLot.trim();
-      }
-
-      if (editExpiresAt) {
-        data.expiresAt = new Date(editExpiresAt).toISOString();
-      }
+        quantity: Number(editQuantity),
+        costPrice: Math.round(Number(editCostPrice) * 100),
+        lot: editLot || undefined,
+        expiresAt: editExpiresAt
+          ? new Date(editExpiresAt).toISOString()
+          : undefined,
+      });
 
       setStockProducts((prev) =>
         prev.map((sp) =>
           sp.uuid === selectedStockProductId
             ? {
                 ...sp,
-                quantity: parseFloat(editQuantity),
-                costPrice: Math.round(parseFloat(editCostPrice) * 100),
-                lot: editLot.trim() || sp.lot,
-                expiresAt: editExpiresAt
-                  ? new Date(editExpiresAt)
-                  : sp.expiresAt,
+                quantity: Number(editQuantity),
+                costPrice: Math.round(Number(editCostPrice) * 100),
+                lot: editLot,
+                expiresAt: editExpiresAt ? new Date(editExpiresAt) : null,
                 updatedAt: new Date(),
               }
-            : sp
-        )
+            : sp,
+        ),
       );
 
       setOpenEditDialog(false);
-
-      await api.patch("/stock/products", data);
-
-      toast.success("Produto atualizado com sucesso!", {
-        autoClose: 1500,
-      });
-    } catch (error) {
+      toast.success("Produto atualizado com sucesso");
+    } catch {
       toast.error("Erro ao atualizar produto");
     }
   }
 
   async function deleteStockProduct(stockProductId: string) {
-    const confirm = window.confirm("Deseja realmente deletar este produto?");
-
-    if (!confirm) return;
+    if (!window.confirm("Deseja realmente deletar este produto?")) return;
 
     try {
-      // Atualização otimista: remove do estado local primeiro
       setStockProducts((prev) =>
-        prev.filter((sp) => sp.uuid !== stockProductId)
+        prev.filter((sp) => sp.uuid !== stockProductId),
       );
 
-      // Faz a requisição ao backend
       await api.delete("/stock/products", {
-        data: {
-          stockProductId,
-        },
+        data: { stockProductId },
       });
 
       toast.success("Produto deletado com sucesso");
-    } catch (error) {
-      toast.error("Erro ao deletar o produto");
+    } catch {
+      toast.error("Erro ao deletar produto");
     }
   }
+
+  if (isPending) return <span>Loading...</span>;
+  if (isError) return <span>{(error as Error).message}</span>;
 
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-5xl mx-auto px-6 py-8 space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">Estoque</h1>
-          <p className="text-muted-foreground">{stock.name}</p>
-        </div>
-        <Link to={"/dashboard"}>
-          <Button className="mb-4">Página inicial</Button>
+        <h1 className="text-3xl font-bold">Estoque</h1>
+        <p className="text-muted-foreground">{stock.name}</p>
+
+        <Link to="/dashboard">
+          <Button>Página inicial</Button>
         </Link>
 
         <form
@@ -348,7 +368,7 @@ export function ManageStock({ stock, products }: Props) {
                   <TableCell>
                     {stockProduct.expiresAt
                       ? new Date(stockProduct.expiresAt).toLocaleDateString(
-                          "pt-BR"
+                          "pt-BR",
                         )
                       : "-"}
                   </TableCell>

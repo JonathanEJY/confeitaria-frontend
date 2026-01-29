@@ -1,6 +1,6 @@
 import { api } from "@/lib/api";
 import type { Product } from "@/types/product";
-import type { CreateProductDTO, DeleteProductDTO } from "../dto/product.dto";
+import type { CreateProductDTO } from "../dto/product.dto";
 
 export async function getProductsApi() {
   const { data } = await api.get("/users/products");
@@ -17,9 +17,10 @@ export async function updateProductApi(product: Product) {
   return data;
 }
 
-export async function deleteProductApi(uuid: DeleteProductDTO) {
+export async function deleteProductApi(uuid: string) {
+  console.log(uuid);
   const { data } = await api.delete("/users/product", {
-    data: { uuid },
+    data: { productId: uuid },
   });
   return data;
 }
