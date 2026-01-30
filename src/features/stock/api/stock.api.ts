@@ -1,23 +1,24 @@
 import { api } from "@/lib/api";
 import type { Stock } from "@/types/stock";
+import type { CreateStockDTO } from "../dto/stock.dto";
 
-export async function getProductsApi() {
-  const { data } = await api.get("/stock/products");
+export async function getStockApi() {
+  const { data } = await api.get("/users/stock");
   return data;
 }
 
-export async function createProductApi(newStock: Stock) {
-  const { data } = await api.post("/stock/products", newStock);
+export async function createStockApi(newStock: CreateStockDTO) {
+  const { data } = await api.post("/users/stock", newStock);
   return data;
 }
 
-export async function updateProductApi(stock: Stock) {
-  const { data } = await api.patch("/stock/products", stock);
+export async function updateStockpi(stock: Stock) {
+  const { data } = await api.patch("/users/stock", stock);
   return data;
 }
 
-export async function deleteProductApi(uuid: string) {
-  const { data } = await api.delete("/stock/products", {
+export async function deleteStockApi(uuid: string) {
+  const { data } = await api.delete("/users/stock", {
     data: { stockProductId: uuid },
   });
   return data;

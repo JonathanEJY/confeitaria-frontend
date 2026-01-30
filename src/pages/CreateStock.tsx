@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -9,19 +8,7 @@ import {
   CardContent,
 } from "@/components/ui/card";
 
-type Props = {
-  onCreate: (name: string) => void;
-};
-
-export function CreateStock({ onCreate }: Props) {
-  const [name, setName] = useState("");
-
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!name.trim()) return;
-    onCreate(name);
-  }
-
+export function CreateStock() {
   return (
     <div className="min-h-screen flex items-center justify-center">
       <Card className="w-full max-w-md">
@@ -33,12 +20,8 @@ export function CreateStock({ onCreate }: Props) {
         </CardHeader>
 
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <Input
-              placeholder="Escolha o nome do estoque"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+          <form className="space-y-4">
+            <Input placeholder="Escolha o nome do estoque" />
 
             <Button className="w-full" type="submit">
               Criar estoque

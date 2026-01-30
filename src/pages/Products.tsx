@@ -4,7 +4,6 @@ import Header from "@/components/layout/Header";
 import { useGetProducts } from "@/features/products/react-query/queries";
 import ThemeToggle from "@/components/shared/ThemeToggle";
 import useDocumentTitle from "@/hooks/useDocumentTitle";
-import { useAuth } from "@/hooks/useAuth";
 
 function Products() {
   // async function handleDeleteProduct(productId: string) {

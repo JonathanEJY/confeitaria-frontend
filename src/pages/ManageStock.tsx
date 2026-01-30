@@ -31,6 +31,7 @@ import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
+import { useGetProducts } from "@/features/products/react-query/queries";
 
 type Product = {
   uuid: string;
@@ -65,7 +66,6 @@ type Stock = {
 
 type Props = {
   stock: Stock;
-  products: Product[];
 };
 
 const productInsertSchema = z.object({
@@ -78,7 +78,7 @@ const productInsertSchema = z.object({
 
 type ProductInsertSchema = z.infer<typeof productInsertSchema>;
 
-export function ManageStock({ stock, products }: Props) {
+export function ManageStock({ stock }: Props) {
   const [stockProducts, setStockProducts] = useState<StockProduct[]>([]);
   const [openEditDialog, setOpenEditDialog] = useState(false);
 
@@ -87,6 +87,8 @@ export function ManageStock({ stock, products }: Props) {
   const [editCostPrice, setEditCostPrice] = useState("");
   const [editLot, setEditLot] = useState("");
   const [editExpiresAt, setEditExpiresAt] = useState("");
+
+  const { data: products } = useGetProducts();
 
   async function getProducts(): Promise<StockProduct[]> {
     const { data } = await api.get("/stock/products", {
@@ -240,7 +242,7 @@ export function ManageStock({ stock, products }: Props) {
                     <SelectValue placeholder="Selecione" />
                   </SelectTrigger>
                   <SelectContent>
-                    {products.map((product) => (
+                    {products.map((product: Product) => (
                       <SelectItem key={product.uuid} value={product.uuid}>
                         {product.name}
                       </SelectItem>
