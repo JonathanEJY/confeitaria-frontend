@@ -1,65 +1,78 @@
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/hooks/useAuth";
 import useDocumentTitle from "@/hooks/useDocumentTitle";
 import { useGetProducts } from "@/features/products/react-query/queries";
+import { Package, Boxes } from "lucide-react";
+import { useGetStockProducts } from "@/features/stockProducts/react-query/queries";
+import { useGetStock } from "@/features/stock/react-query/queries";
+import { Skeleton } from "@/components/ui/skeleton";
 
 function Dashboard() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const { data: products = [] } = useGetProducts();
-  useDocumentTitle("Dashboard - Confeitaria");
+  const { data: stock = "" } = useGetStock();
+  const { data: stockProducts = [], isLoading } = useGetStockProducts(
+    stock.uuid,
+  );
+
+  useDocumentTitle("Dashboard - StockStock");
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <Card className="w-full max-w-md shadow-sm">
-        <CardHeader>
-          <CardTitle className="text-2xl">
-            Olá{user?.username ? `, ${user.username}` : ""} 👋
-          </CardTitle>
-          <CardDescription>Bem-vindo ao seu painel de controle</CardDescription>
-        </CardHeader>
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold">
+          Olá{user?.username ? `, ${user.username}` : ""} 👋
+        </h2>
+        <p className="text-muted-foreground mt-2">
+          Aqui está o resumo do seu estoque
+        </p>
+      </div>
 
-        <CardContent className="flex flex-col gap-4">
-          <Link to="/products">
-            <Button className="w-full">Gerenciar produtos</Button>
-          </Link>
+      <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-lg font-bold">Produtos</CardTitle>
+            <Package className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            {isLoading ? (
+              <>
+                <Skeleton className="h-4 w-20 mb-4" />
+                <Skeleton className="h-4 w-20" />
+              </>
+            ) : (
+              <>
+                <div className="text-2xl font-bold">{products.length}</div>
+                <p className="text-xs text-muted-foreground">
+                  itens em estoque
+                </p>
+              </>
+            )}
+          </CardContent>
+        </Card>
 
-          <Link to="/stock">
-            <Button variant={"outline"} className="w-full">
-              Gerenciar estoque
-            </Button>
-          </Link>
-
-          <Link to="/stock">
-            <Button variant={"outline"} className="w-full">
-              Gerenciar mão de obra
-            </Button>
-          </Link>
-
-          <Link to="/stock">
-            <Button variant={"outline"} className="w-full">
-              Gerenciar receitas
-            </Button>
-          </Link>
-
-          <Button variant="destructive" className="w-full" onClick={logout}>
-            Logout
-          </Button>
-        </CardContent>
-      </Card>
-      <Card>
-        {products ? (
-          <p>{products.length} produtos cadastrados</p>
-        ) : (
-          <p>Nenhum produto cadastrado</p>
-        )}
-      </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">Estoque</CardTitle>
+            <Boxes className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            {isLoading ? (
+              <>
+                <Skeleton className="h-4 w-20 mb-4" />
+                <Skeleton className="h-4 w-20" />
+              </>
+            ) : (
+              <>
+                <div className="text-2xl font-bold">{stockProducts.length}</div>
+                <p className="text-xs text-muted-foreground">
+                  itens em estoque
+                </p>
+              </>
+            )}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

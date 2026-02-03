@@ -33,6 +33,7 @@ function ProductEditDialog({
           <ProductEditForm
             product={product}
             onSuccess={() => handleIsOpen(false)}
+            onCancel={() => handleIsOpen(false)}
           />
         ) : (
           <p>Nada para ser exibido aqui</p>

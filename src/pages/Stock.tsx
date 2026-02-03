@@ -11,7 +11,7 @@ function Stock() {
     return <CreateStock />;
   }
 
-  return <ManageStock stock={stock} />;
+  return <ManageStock />;
 }
 
 export default Stock;

@@ -7,7 +7,7 @@ import LoginForm from "@/features/auth/components/LoginForm";
 import useDocumentTitle from "@/hooks/useDocumentTitle";
 
 function Login() {
-  useDocumentTitle("Login - Confeitaria");
+  useDocumentTitle("Login - StockStock");
   return (
     <div className="h-screen bg-slate-50 flex justify-center items-center">
       <Link

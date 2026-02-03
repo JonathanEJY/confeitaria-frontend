@@ -18,7 +18,6 @@ export async function updateProductApi(product: Product) {
 }
 
 export async function deleteProductApi(uuid: string) {
-  console.log(uuid);
   const { data } = await api.delete("/users/product", {
     data: { productId: uuid },
   });

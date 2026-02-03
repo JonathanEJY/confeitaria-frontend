@@ -2,7 +2,6 @@ import ProductForm from "@/features/products/components/ProductForm";
 import ProductTable from "@/features/products/components/ProductTable";
 import Header from "@/components/layout/Header";
 import { useGetProducts } from "@/features/products/react-query/queries";
-import ThemeToggle from "@/components/shared/ThemeToggle";
 import useDocumentTitle from "@/hooks/useDocumentTitle";
 
 function Products() {
@@ -31,11 +30,10 @@ function Products() {
 
   const { data: products, isLoading } = useGetProducts();
 
-  useDocumentTitle("Meus produtos - Confeitaria");
+  useDocumentTitle("Meus produtos - StockStock");
 
   return (
     <div className="min-h-screen bg-background">
-      <ThemeToggle />
       <div className="max-w-4xl mx-auto px-6 py-8 space-y-6">
         <Header
           title="Meus Produtos"

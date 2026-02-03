@@ -3,13 +3,12 @@ import type { Product } from "@/types/product";
 export type StockProduct = {
   uuid: string;
   quantity: number;
-  lot: string;
-  expiresAt: Date;
-  costPrice: number;
-  createdAt: Date;
-  updatedAt: Date;
-  productId: string;
   stockId: string;
+  costPrice: number;
+  lot?: string | null;
+  expiresAt?: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
   product: Product;
 };
 

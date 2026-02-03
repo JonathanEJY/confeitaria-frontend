@@ -8,6 +8,7 @@ import PrivateRoute from "./routes/PrivateRoute";
 import Dashboard from "./pages/Dashboard";
 import Products from "./pages/Products";
 import Stock from "./pages/Stock";
+import DashboardLayout from "./components/layout/DashboardLayout";
 
 let router = createBrowserRouter([
   { path: "/", Component: Home },
@@ -16,9 +17,14 @@ let router = createBrowserRouter([
   {
     Component: PrivateRoute,
     children: [
-      { path: "/dashboard", Component: Dashboard },
-      { path: "/products", Component: Products },
-      { path: "/stock", Component: Stock },
+      {
+        Component: DashboardLayout,
+        children: [
+          { path: "/dashboard", Component: Dashboard },
+          { path: "/products", Component: Products },
+          { path: "/stock", Component: Stock },
+        ],
+      },
     ],
   },
   { path: "*", Component: NotFound },

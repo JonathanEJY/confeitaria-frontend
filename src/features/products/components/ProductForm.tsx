@@ -25,7 +25,6 @@ function ProductForm() {
     reset();
   }
 
-  console.log(errors);
   return (
     <form
       className="flex flex-wrap gap-3 items-center"

@@ -19,9 +19,14 @@ import { toast } from "react-toastify";
 type ProductEditFormProps = {
   product: Product;
   onSuccess: () => void;
+  onCancel: () => void;
 };
 
-function ProductEditForm({ product, onSuccess }: ProductEditFormProps) {
+function ProductEditForm({
+  product,
+  onSuccess,
+  onCancel,
+}: ProductEditFormProps) {
   const { register, handleSubmit, control, errors } =
     useProductEditForm(product);
 
@@ -72,7 +77,7 @@ function ProductEditForm({ product, onSuccess }: ProductEditFormProps) {
           {isPending ? "Salvando..." : "Salvar alterações"}
         </Button>
 
-        <Button type="button" variant="outline">
+        <Button type="button" variant="outline" onClick={onCancel}>
           Cancelar
         </Button>
       </div>

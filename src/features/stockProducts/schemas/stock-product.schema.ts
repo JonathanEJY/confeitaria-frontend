@@ -1,11 +1,11 @@
 import { z } from "zod";
 
-const stockProductSchema = z.object({
-  selectedProductId: z.uuid(),
-  quantity: z.number().min(0.01, "Quantidade deve ser maior que 0"),
-  costPrice: z.number().min(0.01, "Valor deve ser maior que 0"),
-  lot: z.string().optional().or(z.literal("")),
+export const stockProductCreateSchema = z.object({
+  productId: z.uuid(),
+  quantity: z.number(),
+  stockId: z.string(),
+  costPrice: z.number(),
   expiresAt: z.date().optional(),
+  lot: z.string().optional(),
 });
-
-export type ProductInsertSchema = z.infer<typeof stockProductSchema>;
+export type StockProductCreateSchema = z.infer<typeof stockProductCreateSchema>;
