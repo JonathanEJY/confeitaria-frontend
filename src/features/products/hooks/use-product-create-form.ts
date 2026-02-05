@@ -8,6 +8,10 @@ import {
 export function useProductCreateForm() {
   const form = useForm<ProductCreateSchema>({
     resolver: zodResolver(productCreateSchema),
+    defaultValues: {
+      name: "",
+      unit: undefined,
+    },
   });
 
   return {

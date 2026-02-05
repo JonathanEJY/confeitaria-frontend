@@ -20,9 +20,16 @@ function ProductForm() {
   const { mutate, isPending } = useCreateProduct();
 
   async function onSubmit(data: CreateProductDTO) {
-    mutate(data);
-    toast.success("Produto adicionado com sucesso!");
-    reset();
+    try {
+      mutate(data);
+      toast.success("Produto adicionado com sucesso!");
+    } catch (e) {
+      toast.error("Erro ao adicionar produto!");
+    }
+    reset({
+      name: "",
+      unit: undefined,
+    });
   }
 
   return (
@@ -40,7 +47,7 @@ function ProductForm() {
           control={control}
           name="unit"
           render={({ field }) => (
-            <Select value={field.value} onValueChange={field.onChange}>
+            <Select value={field.value ?? ""} onValueChange={field.onChange}>
               <SelectTrigger>
                 <SelectValue placeholder="Selecione uma unidade" />
               </SelectTrigger>

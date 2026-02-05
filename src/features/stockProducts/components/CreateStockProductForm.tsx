@@ -15,19 +15,33 @@ import type { Product } from "@/types/product";
 import { toast } from "react-toastify";
 import type { CreateStockProductDTO } from "../dto/stock-products.dto";
 import { useCreateStockProduct } from "../react-query/queries";
+import { useGetStock } from "@/features/stock/react-query/queries";
 
 function CreateStockProductForm() {
   const { control, handleSubmit, register, reset, errors } =
     useStockProductCreateForm();
   const { data: products = [] } = useGetProducts();
+  const { data: stock } = useGetStock();
+
   const { mutate } = useCreateStockProduct();
 
   async function onSubmit(data: CreateStockProductDTO) {
     mutate(data);
     toast.success("Produto adicionado ao estoque com sucesso!");
+
     reset();
+
+    setTimeout(() => {
+      reset({
+        productId: undefined,
+        quantity: undefined,
+        costPrice: undefined,
+        lot: "",
+        expiresAt: undefined,
+        stockId: stock?.uuid ?? "",
+      });
+    });
   }
-  console.log(errors);
 
   return (
     <form
@@ -42,7 +56,7 @@ function CreateStockProductForm() {
           name="productId"
           control={control}
           render={({ field }) => (
-            <Select value={field.value} onValueChange={field.onChange}>
+            <Select value={field.value ?? ""} onValueChange={field.onChange}>
               <SelectTrigger className="w-55">
                 <SelectValue placeholder="Selecione" />
               </SelectTrigger>
@@ -64,7 +78,9 @@ function CreateStockProductForm() {
         <Input
           type="number"
           step="0.01"
-          {...register("quantity", { valueAsNumber: true })}
+          {...register("quantity", {
+            setValueAs: (v) => (v === "" ? undefined : Number(v)),
+          })}
         />
       </div>
 
@@ -76,7 +92,9 @@ function CreateStockProductForm() {
         <Input
           type="number"
           step="0.01"
-          {...register("costPrice", { valueAsNumber: true })}
+          {...register("costPrice", {
+            setValueAs: (v) => (v === "" ? undefined : Number(v)),
+          })}
         />
       </div>
 
@@ -90,7 +108,7 @@ function CreateStockProductForm() {
         <Input
           type="date"
           {...register("expiresAt", {
-            setValueAs: (value) => (value ? new Date(value) : undefined),
+            setValueAs: (value) => (value ? value : undefined),
           })}
         />
       </div>

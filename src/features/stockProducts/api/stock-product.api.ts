@@ -18,7 +18,7 @@ export async function createStockProductsApi(
 export async function updateStockProductsApi(
   updateProduct: CreateStockProductDTO,
 ) {
-  const { data } = await api.patch("/users/products", updateProduct);
+  const { data } = await api.patch("/stock/products", updateProduct);
   return data;
 }
 

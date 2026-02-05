@@ -12,6 +12,11 @@ export default function useStockProductCreateForm() {
   const form = useForm<StockProductCreateSchema>({
     resolver: zodResolver(stockProductCreateSchema),
     defaultValues: {
+      productId: undefined,
+      quantity: undefined,
+      costPrice: undefined,
+      lot: "",
+      expiresAt: undefined,
       stockId: stock?.uuid ?? "",
     },
   });

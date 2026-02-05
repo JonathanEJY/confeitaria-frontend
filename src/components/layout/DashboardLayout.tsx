@@ -29,6 +29,11 @@ const sidebarItems = [
     to: "/stock",
     icon: Boxes,
   },
+  {
+    title: "Dados do usuário",
+    to: "/user",
+    icon: Boxes,
+  },
 ];
 
 export default function DashboardLayout() {
@@ -65,7 +70,7 @@ export default function DashboardLayout() {
         </SidebarContent>
 
         <SidebarFooter className="px-4 flex flex-col gap-2 text-sm text-muted-foreground">
-          <span>v1.0.0</span>
+          <span>v0.0.1</span>
           <Button variant="outline" onClick={logout}>
             Logout
           </Button>
@@ -74,6 +79,7 @@ export default function DashboardLayout() {
 
       <SidebarInset>
         <header className="flex h-16 items-center gap-2 border-b px-4 justify-between">
+          <SidebarTrigger />
           <h1 className="text-lg font-semibold">{currentTitle}</h1>
           <ThemeToggle />
         </header>

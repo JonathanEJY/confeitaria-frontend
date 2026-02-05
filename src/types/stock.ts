@@ -5,8 +5,8 @@ export type StockProduct = {
   quantity: number;
   stockId: string;
   costPrice: number;
-  lot?: string | null;
-  expiresAt?: Date;
+  lot?: string | undefined;
+  expiresAt?: string;
   createdAt?: Date;
   updatedAt?: Date;
   product: Product;

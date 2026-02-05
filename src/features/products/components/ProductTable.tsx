@@ -12,6 +12,7 @@ import type { Product } from "@/types/product";
 import ProductEditDialog from "./ProductEditDialog";
 import { useState } from "react";
 import { useDeleteProduct } from "../react-query/queries";
+import { toast } from "react-toastify";
 
 type ProductTableProps = {
   products: Product[];
@@ -22,6 +23,16 @@ function ProductTable({ products }: ProductTableProps) {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   const { mutate } = useDeleteProduct();
+
+  function handleDelete(productId: string) {
+    if (!window.confirm("Deseja realmente deletar este produto?")) return;
+    try {
+      mutate(productId);
+      toast.success("Produto deletado com sucesso");
+    } catch (e) {
+      toast.error("erro: " + e);
+    }
+  }
 
   function handleEditDialogOpenChange(isOpen: boolean) {
     setOpenEditDialog(isOpen);
@@ -69,7 +80,7 @@ function ProductTable({ products }: ProductTableProps) {
                     <Button
                       size="sm"
                       variant={"destructive"}
-                      onClick={() => mutate(product.uuid)}
+                      onClick={() => handleDelete(product.uuid)}
                     >
                       Deletar
                     </Button>
