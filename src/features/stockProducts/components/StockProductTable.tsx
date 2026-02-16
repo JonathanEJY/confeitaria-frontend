@@ -53,13 +53,13 @@ function StockProductTable() {
       <Table>
         <TableHeader>
           <TableRow className="bg-muted">
-            <TableHead>Produto</TableHead>
-            <TableHead>Quantidade</TableHead>
-            <TableHead>Unidade</TableHead>
-            <TableHead>Valor pago</TableHead>
-            <TableHead>Lote</TableHead>
-            <TableHead>Validade</TableHead>
-            <TableHead className="text-right">Ações</TableHead>
+            <TableHead className="text-center">Produto</TableHead>
+            <TableHead className="text-center">Quantidade</TableHead>
+            <TableHead className="text-center">Unidade</TableHead>
+            <TableHead className="text-center">Valor pago</TableHead>
+            <TableHead className="text-center">Lote</TableHead>
+            <TableHead className="text-center">Validade</TableHead>
+            <TableHead className="text-center">Ações</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -73,19 +73,29 @@ function StockProductTable() {
           ) : (
             stockProducts.map((stockProduct: StockProduct) => (
               <TableRow className="border-b" key={stockProduct.uuid}>
-                <TableCell>{stockProduct.product.name}</TableCell>
-                <TableCell>{stockProduct.quantity}</TableCell>
-                <TableCell>{stockProduct.product.unit}</TableCell>
-                <TableCell>
+                <TableCell className="text-center">
+                  {stockProduct.product.name}
+                </TableCell>
+                <TableCell className="text-center">
+                  {stockProduct.quantity}
+                </TableCell>
+                <TableCell className="text-center">
+                  {stockProduct.product.unit}
+                </TableCell>
+                <TableCell className="text-center">
                   {new Intl.NumberFormat("pt-BR", {
                     style: "currency",
                     currency: "BRL",
                   }).format(Number(stockProduct.costPrice))}
                 </TableCell>
-                <TableCell>{stockProduct.lot || "-"}</TableCell>
+                <TableCell className="text-center">
+                  {stockProduct.lot || "-"}
+                </TableCell>
 
-                <TableCell>{formatDateBR(stockProduct.expiresAt)}</TableCell>
-                <TableCell className="flex justify-end gap-2">
+                <TableCell className="text-center">
+                  {formatDateBR(stockProduct.expiresAt)}
+                </TableCell>
+                <TableCell className="flex justify-center gap-2">
                   <Button
                     size="sm"
                     className="bg-amber-300 text-gray-800 hover:bg-amber-200"

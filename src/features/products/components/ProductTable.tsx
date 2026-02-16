@@ -43,9 +43,9 @@ function ProductTable({ products }: ProductTableProps) {
       <Table className="w-full table-fixed">
         <TableHeader>
           <TableRow className="bg-muted">
-            <TableHead className="w-[40%]">Nome</TableHead>
-            <TableHead className="w-[40%]">Unidade</TableHead>
-            <TableHead className="w-[20%] text-right">Opções</TableHead>
+            <TableHead className="w-[40%] text-center">Nome</TableHead>
+            <TableHead className="w-[40%] text-center">Unidade</TableHead>
+            <TableHead className="w-[20%] text-center">Opções</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -62,8 +62,12 @@ function ProductTable({ products }: ProductTableProps) {
                 key={product.uuid}
                 className="hover:bg-muted/50 transition"
               >
-                <TableCell className="text-lg">{product.name}</TableCell>
-                <TableCell className="text-lg">{product.unit}</TableCell>
+                <TableCell className="text-lg text-center">
+                  {product.name}
+                </TableCell>
+                <TableCell className="text-lg text-center">
+                  {product.unit}
+                </TableCell>
                 <TableCell>
                   <div className="flex justify-end gap-2">
                     <Button

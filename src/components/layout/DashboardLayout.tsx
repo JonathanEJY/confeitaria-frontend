@@ -8,7 +8,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { LayoutDashboard, Package, Boxes } from "lucide-react";
+import { LayoutDashboard, Package, Boxes, UserCog, Book } from "lucide-react";
 import { Button } from "../ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import ThemeToggle from "../shared/ThemeToggle";
@@ -30,9 +30,14 @@ const sidebarItems = [
     icon: Boxes,
   },
   {
-    title: "Dados do usuário",
+    title: "Markup",
     to: "/user",
-    icon: Boxes,
+    icon: UserCog,
+  },
+  {
+    title: "Receitas",
+    to: "/recipes",
+    icon: Book,
   },
 ];
 
@@ -58,11 +63,11 @@ export default function DashboardLayout() {
                 key={to}
                 to={to}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 rounded-md px-3 py-2 text-lg transition-colors
+                  `flex gap-3 rounded-md px-3 py-2 text-lg transition-colors
                   ${isActive ? "bg-muted font-medium" : "hover:bg-muted"}`
                 }
               >
-                <Icon className="h-4 w-4" />
+                <Icon className="h-6 w-6" />
                 {title}
               </NavLink>
             ))}
