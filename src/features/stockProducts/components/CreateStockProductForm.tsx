@@ -18,7 +18,7 @@ import { useCreateStockProduct } from "../react-query/queries";
 import { useGetStock } from "@/features/stock/react-query/queries";
 
 function CreateStockProductForm() {
-  const { control, handleSubmit, register, reset, errors } =
+  const { control, handleSubmit, register, reset } =
     useStockProductCreateForm();
   const { data: products = [] } = useGetProducts();
   const { data: stock } = useGetStock();
