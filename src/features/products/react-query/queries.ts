@@ -5,7 +5,6 @@ import {
   updateProductApi,
   deleteProductApi,
 } from "../api/products.api";
-import { toast } from "react-toastify";
 
 export function useGetProducts() {
   return useQuery({
