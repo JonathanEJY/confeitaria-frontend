@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useGetLabor } from "@/features/labor/react-query/queries";
-import { formatCurrency } from "@/helper/FormatCurrency/formatCurrency";
+import { formatCurrency } from "@/helper/formatCurrency";
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";

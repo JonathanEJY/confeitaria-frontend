@@ -29,8 +29,6 @@ function CreateStockProductForm() {
     mutate(data);
     toast.success("Produto adicionado ao estoque com sucesso!");
 
-    reset();
-
     setTimeout(() => {
       reset({
         productId: undefined,

@@ -1,6 +1,7 @@
 import { useNavigate, Link } from "react-router-dom";
 import { api } from "../lib/api";
 import { useAuth } from "../hooks/useAuth";
+import { Button } from "@/components/ui/button";
 
 function Register() {
   const navigate = useNavigate();
@@ -31,27 +32,61 @@ function Register() {
   }
 
   return (
-    <div className="auth-container">
-      <Link to="/" className="back-link">
-        ← Voltar
+    <div className="h-screen bg-slate-50 flex justify-center items-center">
+      <Link
+        to="/"
+        className="absolute top-6 left-6 no-underline text-slate-900 text-[0.95rem] font-medium opacity-70 hover:opacity-100 transition-opacity duration-200"
+      >
+        <Button>← Voltar</Button>
       </Link>
 
-      <form className="auth-form" onSubmit={handleSubmit}>
-        <h1>Cadastro</h1>
+      <form
+        className="bg-white rounded-2xl p-10 w-full max-w-95 flex flex-col gap-5 border border-gray-200"
+        onSubmit={handleSubmit}
+      >
+        <h1 className="text-center text-[1.8rem] font-semibold text-slate-900 mb-2">
+          Cadastro
+        </h1>
 
-        <input name="email" type="email" placeholder="Email" required />
-        <input
-          name="passwordHash"
-          type="password"
-          placeholder="Senha"
-          required
-        />
-        <input name="username" type="text" placeholder="Usuário" required />
+        <div className="flex flex-col gap-1">
+          <input
+            className="px-3.5 py-3 rounded-[10px] border border-gray-200 text-[0.95rem] outline-none focus:border-slate-400 transition-colors"
+            name="email"
+            type="email"
+            placeholder="Email"
+            required
+          />
+        </div>
+        <div className="flex flex-col gap-1">
+          <input
+            className="px-3.5 py-3 rounded-[10px] border border-gray-200 text-[0.95rem] outline-none focus:border-slate-400 transition-colors"
+            name="passwordHash"
+            type="password"
+            placeholder="Senha"
+            required
+          />
+        </div>
+        <div className="flex flex-col gap-1">
+          <input
+            className="px-3.5 py-3 rounded-[10px] border border-gray-200 text-[0.95rem] outline-none focus:border-slate-400 transition-colors"
+            name="username"
+            type="text"
+            placeholder="Usuário"
+            required
+          />
+        </div>
+        <button
+          className="mt-2 py-3 rounded-[10px] bg-slate-900 text-white font-medium hover:bg-gray-800 transition-colors duration-200"
+          type="submit"
+        >
+          Cadastrar
+        </button>
 
-        <button type="submit">Cadastrar</button>
-
-        <p className="auth-footer">
-          Já tem conta? <Link to="/login">Faça login</Link>
+        <p className="text-center">
+          Já tem conta?{" "}
+          <Link to="/login" className="text-blue-500">
+            Faça login
+          </Link>
         </p>
       </form>
     </div>

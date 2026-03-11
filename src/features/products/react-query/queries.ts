@@ -40,7 +40,6 @@ export function useDeleteProduct() {
     mutationFn: deleteProductApi,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
-      toast.success("Produto deletado com sucesso!");
     },
   });
 }
